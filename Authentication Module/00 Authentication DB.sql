@@ -10,8 +10,14 @@ CREATE TABLE Permissions (
 
 CREATE TABLE Roles (
 	roleID INT(3) NOT NULL PRIMARY KEY,
-    roleName VARCHAR(30) NOT NULL,
-    permissionID INT(5), 
+    roleName VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE RolePermissions (
+	roleID INT(3) NOT NULL,
+    permissionID INT(5) NOT NULL,
+	PRIMARY KEY (roleID, permissionID),
+    FOREIGN KEY (roleID) REFERENCES Roles(roleID),
     FOREIGN KEY (permissionID) REFERENCES Permissions(permissionID)
 );
 
