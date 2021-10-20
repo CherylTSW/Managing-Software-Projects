@@ -1,13 +1,34 @@
 import mysql.connector
+from mysql.connector import Error
 
-def ExecuteSQLFile(filename):
-    # Connect to database
+def create_inventory_db():
+    # Create the database InventoryDB if it does not exist
     mydb = mysql.connector.connect(
         host = "localhost",
         user = "root",
         password = "",
-        database = "InventoryDB"
     )
+    mydb.cursor().execute("CREATE DATABASE IF NOT EXISTS InventoryDB")
+    mydb.close()
+
+def connect_inventory_db():
+    # Create connection to database
+    try:
+        # If connection created successfully, return the connection object
+        mydb = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "",
+            database = "InventoryDB"
+        )
+        return mydb
+    except Error:
+        # If error occurs, return False
+        return False
+
+
+def execute_sql_file(filename):
+    mydb = connect_inventory_db()
 
     # Open file to read, then split the content with ';' as delimiter to form mSQL code that can be executed
     file = open(filename, 'r')
@@ -19,52 +40,33 @@ def ExecuteSQLFile(filename):
     for code in sqlCode:
         myCursor.execute(code)
 
-    # Declare 'result', iterate through the myCursor to store the tables present in database into 'result'
-    result = ""
-    myCursor.execute("SHOW TABLES")
-    for x in myCursor:
-        result += str(x)
-
     mydb.close()
 
-    # (For testing purpose) to check if table is created successfully, result != ""
-    return result
 
-def CreateInventoryDB():
-    # Create the database InventoryDB if it does not exist
-    mydb = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = ""
-    )
-    mydb.cursor().execute("CREATE DATABASE IF NOT EXISTS InventoryDB")
-
-def AddInventory(itemName: str, itemPrice: float, itemQuantity: int):
+def add_inventory(itemName: str, itemPrice: float, itemQuantity: int):
     # Create the INSERT code to be executed
     sqlInsert = f"INSERT INTO Items (itemName, itemPrice, itemQuantity) VALUES (%s, %s, %s)"
     data = (itemName, itemPrice, itemQuantity)
 
     # Connect to database and execute the command
-    mydb = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "",
-        database = "InventoryDB"
-    )
+    mydb = connect_inventory_db()
     myCursor = mydb.cursor()
     myCursor.execute(sqlInsert, data)
     mydb.commit()
 
-    # (For testing purpose) to check if INSERT is successful by ensuring row affected == 1
-    return myCursor.rowcount
+    # Obtain the count of row affected
+    result = myCursor.rowcount
+    mydb.close()
+    
+    # If row affected > 0, the insertion is successful. Return True on success, else return false
+    if(result > 0):
+        return True
+    else:
+        return False
+        
 
-def GetInventory():
+def get_inventory():
     query = "SELECT itemID, itemName, itemPrice, itemQuantity FROM Items"
-    mydb = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "",
-        database = "InventoryDB"
-    )
+    mydb = connect_inventory_db()
     result = mydb.cursor().execute(query).fetchall()
     return result
