@@ -24,6 +24,7 @@ def execute_query(connection, query):
     try:
         cursor.execute(query)
         connection.commit()
+        cursor.close()
         print("Query successful")
     except Error as err:
         print(f"Error: '{err}'")
@@ -35,6 +36,7 @@ def read_query(connection, query):
     try:
         cursor.execute(query)
         result = cursor.fetchall()
+        cursor.close()
         return result
     except Error as err:
         print(f"Error: '{err}'")
