@@ -27,8 +27,54 @@ class TestInventory(unittest.TestCase):
     
     # Test case to test if add_inventory() INSERT an item into the table successfully
     def test_add_inventory(self):
-        result = inventory.add_inventory("Panadol 20 Tablets", 12.90, 100)
+        result = inventory.add_inventory("Paracetamol 10 Tablets", 12.90, 100)
+        # result = False if error occurs while adding inventory
         self.assertTrue(result)
+
+    # Test case to test if get_all_inventory() retrieve items from the database successfully
+    def test_get_all_inventory(self):
+        # Call the method and print the rows of the table if result != False
+        result = inventory.get_all_inventory()
+        if(result):
+            for row in result:
+                print(row)
+        
+        # result = False if error occurs while getting the inventory
+        self.assertTrue(result)
+
+    # Test case to test if get_inventory_by_id() retrieve correct items from the database successfully
+    def test_get_inventory_by_id(self):
+        # Call the method and print the record retrieved to see if expected item is retrieved
+        result = inventory.get_inventory_by_id(1)
+        if(result):
+            for row in result:
+                print(row)
+
+        # result = False if error occurs while getting the inventory
+        self.assertTrue(result)
+
+    # Test case to test if get_inventory_by_name() retrieve correct items from the database successfully
+    def test_get_inventory_by_name(self):
+        # Call the method and print the record retrieved to see if expected item is retrieved
+        result = inventory.get_inventory_by_name("Paracetamol 10 Tablets")
+        if(result):
+            for row in result:
+                print(row)
+
+        # result = False if error occurs while getting the inventory
+        self.assertTrue(result)
+
+    # Test case to test if edit_inventory() edit the item as expected
+    def test_edit_inventory(self):
+        # Call the method and assertTrue() function. 
+        self.assertTrue(inventory.edit_inventory("Paracetamol 20 Tablets", 24.90, 30, 1))
+
+        # Get the inventory item with itemID = 1 and print the result to see if item is edited as expected
+        result = inventory.get_inventory_by_id(1)
+        if(result):
+            for row in result:
+                print(row)
+
     
     
 if __name__ == '__main__':
