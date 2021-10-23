@@ -1,4 +1,5 @@
 import unittest
+from tkinter import *
 from lib import inventory
 
 class TestInventory(unittest.TestCase):
@@ -74,6 +75,18 @@ class TestInventory(unittest.TestCase):
         if(result):
             for row in result:
                 print(row)
+
+    # Test case to test if display_inventory displays the items as expected
+    def test_display_inventory(self):
+        window = Tk()
+        window.title("PHP-SREPS")
+
+        # Retrieve all records using get_all_inventory() and call display_inventory() to displays the records
+        item = inventory.get_all_inventory()    
+        inventory.display_inventory(window, 0, 0, item)
+
+        window.attributes('-fullscreen', True)
+        window.mainloop()
 
     
     
