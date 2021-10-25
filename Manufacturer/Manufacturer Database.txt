@@ -1,0 +1,12 @@
+DROP DATABASE SPRINT1;
+CREATE DATABASE SPRINT1;
+USE SPRINT1;
+
+CREATE TABLE MANUFACTURER (
+	ManufacturerID INT(10) NOT NULL PRIMARY KEY,
+	ManufacturerFirstName nvarchar(25) NULL,
+	ManufacturerLastName nvarchar(25) NULL,
+	ManufacturerItem nvarchar(30) NULL,
+	ManufacturerStreetAddress nvarchar(50) NULL,
+	ManufacturerPhoneNumber nvarchar(8) NULL
+);

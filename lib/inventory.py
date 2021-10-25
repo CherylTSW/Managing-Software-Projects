@@ -1,4 +1,6 @@
+from tkinter.font import BOLD
 import mysql.connector
+from tkinter import *
 from mysql.connector import Error
 
 # Method to create the database InventoryDB
@@ -134,4 +136,24 @@ def edit_inventory(newName: str, newPrice: float, newQuantity: int, id: int):
     except Error:
         # return False if error occurs
         return False
+
+# Method to display the items retrieved from database in a table form
+def display_inventory(window: Tk, startColumn: int, startRow: int, items):
+    # Declaring fields(used as table headings) and fieldsWidth(used to set width of each column)
+    fields = ["ID", "Item Name", "Price", "Quantity"]
+    fieldsWidth = [10, 30, 15, 15]
+
+    # Get the number of rows and columns
+    numberOfRow = len(items)
+    numberOfColumn = len(items[0])
+
+    # loop to create the Label()
+    for x in range(numberOfRow):
+        for y in range(numberOfColumn):
+            heading = Label(window, font=('Arial', 12), text=fields[y], width=fieldsWidth[y], borderwidth=2, relief="ridge")
+            heading.grid(column=startColumn+y, row=startRow)
+            data = Label(window, font=('Arial', 12), text=items[x][y], width=fieldsWidth[y], borderwidth=2, relief="ridge")
+            data.grid(column=startColumn+y, row=startRow+x+1)
+
+
 
