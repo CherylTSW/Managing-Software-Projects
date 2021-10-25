@@ -35,3 +35,25 @@ def password_change(conn, userID:int, password:str):
     exec1 = database.execute_query(conn, pwdChangeQuery)
 
     return exec1 
+
+# Function to check whether credentials is correct and return the role
+def login(conn, username:str, pwd:str):
+    # Query to find whether the account exists
+    findUserQuery = f"""
+    SELECT EXISTS (SELECT * FROM Users WHERE username='{username}' AND password='{pwd}')
+    """
+    
+    content = database.read_query(conn, findUserQuery)
+
+    status = content[0][0]
+
+    if (status == 1):
+        # If account is found, login successful, get role and userID
+        getUserInfo = f"""
+        SELECT * FROM Users WHERE username='{username}' AND password='{pwd}'
+        """
+        result = database.read_query(conn, getUserInfo)
+        print("Login successfully")
+        return result[0][0], result[0][4]
+    else:
+        print("Login failed, username or password not found.")
