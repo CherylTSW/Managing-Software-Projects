@@ -17,7 +17,7 @@ CREATE TABLE Users (
     username VARCHAR(50) NOT NULL,
     firstName VARCHAR(30) NOT NULL,
     lastName VARCHAR(30) NOT NULL,
-    roleID INT(3) NOT NULL,
+    role INT(3) NOT NULL,
     password VARCHAR(30) NOT NULL
 );"""
 
@@ -26,12 +26,6 @@ class TestAuthentication(unittest.TestCase):
         """
         Test that whether account is added successfully
         """
-        test_config = {
-            'host': "localhost",
-            'user': "root",
-            'password': "",
-            'database': "Test"
-        }
         
         # Create test database
         first_connection = db.create_server_connection("localhost", "root", "")
@@ -50,12 +44,6 @@ class TestAuthentication(unittest.TestCase):
         """
         Test that whether account is deleted successfully
         """
-        test_config = {
-            'host': "localhost",
-            'user': "root",
-            'password': "",
-            'database': "Test"
-        }
         
         # Create test database
         first_connection = db.create_server_connection("localhost", "root", "")
@@ -66,7 +54,6 @@ class TestAuthentication(unittest.TestCase):
 
         conn = db.create_db_connection(test_config)
 
-        
         db.execute_query(conn, create_table_query)
 
         auth.add_account(conn, "test", "test", "test", "test", 1)
