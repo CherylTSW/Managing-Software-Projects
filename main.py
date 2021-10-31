@@ -83,11 +83,11 @@ def clickedAdd():
     labelQuantity.place(x=x_offset, y=470, anchor="e")
     # Entry
     entryItemName = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemName.place(x=x_offset+10, y=270, anchor="w", width=470, height=50)
+    entryItemName.place(x=x_offset+10, y=270, anchor="w", width=entry_width, height=50)
     entryPrice = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryPrice.place(x=x_offset+10, y=370, anchor="w", width=470, height=50)
+    entryPrice.place(x=x_offset+10, y=370, anchor="w", width=entry_width, height=50)
     entryQuantity = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryQuantity.place(x=x_offset+10, y=470, anchor="w", width=470, height=50)
+    entryQuantity.place(x=x_offset+10, y=470, anchor="w", width=entry_width, height=50)
     # Submit button
     btnSubmit = Button(inputFrame, text="Submit", font=('Arial', 18), bg=orange, fg=white, relief='flat', command=clickedSubmit, activebackground='#FB5F00', activeforeground=white, padx=30, pady=5)
     btnSubmit.place(x=(screen_width-240)/2, y=800, anchor='center')
@@ -154,13 +154,13 @@ def clickedEdit():
     labelQuantity.place(x=x_offset, y=570, anchor="e")
     # Entry
     entryItemID = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemID.place(x=x_offset+10, y=270, anchor="w", width=470, height=50)
+    entryItemID.place(x=x_offset+10, y=270, anchor="w", width=entry_width, height=50)
     entryItemName = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemName.place(x=x_offset+10, y=370, anchor="w", width=470, height=50)
+    entryItemName.place(x=x_offset+10, y=370, anchor="w", width=entry_width, height=50)
     entryPrice = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryPrice.place(x=x_offset+10, y=470, anchor="w", width=470, height=50)
+    entryPrice.place(x=x_offset+10, y=470, anchor="w", width=entry_width, height=50)
     entryQuantity = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryQuantity.place(x=x_offset+10, y=570, anchor="w", width=470, height=50)
+    entryQuantity.place(x=x_offset+10, y=570, anchor="w", width=entry_width, height=50)
     # Submit button
     btnSubmit = Button(inputFrame, text="Submit", font=('Arial', 18), bg=orange, fg=white, relief='flat', command=clickedSubmit, activebackground='#FB5F00', activeforeground=white, padx=30, pady=5)
     btnSubmit.place(x=(screen_width-240)/2, y=800, anchor='center')
@@ -202,7 +202,7 @@ def clickedDisplay():
             itemName = entryItemName.get()
             result = inventory.get_inventory_by_name(itemName)
             if(result):
-                inventory.display_inventory(inputFrame, 150, 500, result)
+                inventory.display_inventory(inputFrame, (screen_width-240-1000)/2, 500, result)
             else:
                 messagebox.showerror('Match not found', 'No match can be found')
         else:
@@ -224,9 +224,9 @@ def clickedDisplay():
     labelItemName.place(x=x_offset, y=370, anchor="e")
     # Entry
     entryItemID = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemID.place(x=x_offset+10, y=270, anchor="w", width=470, height=50)
+    entryItemID.place(x=x_offset+10, y=270, anchor="w", width=entry_width, height=50)
     entryItemName = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemName.place(x=x_offset+10, y=370, anchor="w", width=470, height=50)
+    entryItemName.place(x=x_offset+10, y=370, anchor="w", width=entry_width, height=50)
     # Submit button
     btnSubmit = Button(inputFrame, text="Search", font=('Arial', 18), bg=orange, fg=white, relief='flat', command=clickedSubmit, activebackground='#FB5F00', activeforeground=white, padx=30, pady=5)
     btnSubmit.place(x=(screen_width-240)/2, y=800, anchor='center')
@@ -251,8 +251,14 @@ window = Tk()
 window.attributes('-fullscreen', True)
 screen_width = window.winfo_screenwidth()        
 screen_height = window.winfo_screenheight()
+# Entry width calculation (wider width on bigger screen)
+entry_width = 470
+if(screen_width > 1750):
+    entry_width = 670
 # X offset calculation
-x_offset = int((screen_width-240-780)/2 + 250)
+x_offset = int((screen_width-240-780)/2 + 200)
+if(screen_width > 1750):
+    x_offset = int((screen_width-240-980)/2 + 200)
 # Create database and table
 inventory.create_inventory_db()
 inventory.execute_sql_file("sql/InventoryDB.sql")
