@@ -1,30 +1,9 @@
-from lib import authentication as auth
-from lib import database as db
+
 from lib import inventory
 from tkinter import *
 from tkinter import messagebox
 from tkinter.font import BOLD
 
-auth_config = {
-            'host': "localhost",
-            'user': "root",
-            'password': "",
-            'database': "Authentication"
-        }
-
-auth_db_conn = db.create_db_connection(auth_config)
-
-# Add an account 
-auth.add_account(auth_db_conn, "placeholder", "123", "pol", "tato", 1)
-
-# Login
-print(auth.login(auth_db_conn, "placeholder", "123"))
-
-# Change password
-auth.password_change(auth_db_conn, auth.get_userID(auth_db_conn, "placeholder"), "456")
-
-# Delete an account with userID
-auth.delete_account(auth_db_conn, auth.get_userID(auth_db_conn, "placeholder"))
 
 '''
     Inventory Module
@@ -81,18 +60,18 @@ def clickedAdd():
     btnBack.place(x=50, y=70, anchor='w')
     # Label
     labelItemName = Label(inputFrame, text="Item Name :", font=('Arial', 24), fg=blue)
-    labelItemName.place(x=500, y=270, anchor="e")
+    labelItemName.place(x=x_offset, y=270, anchor="e")
     labelPrice = Label(inputFrame, text="Price(RM) :", font=('Arial', 24), fg=blue)
-    labelPrice.place(x=500, y=370, anchor="e")
+    labelPrice.place(x=x_offset, y=370, anchor="e")
     labelQuantity = Label(inputFrame, text="Quantity :", font=('Arial', 24), fg=blue)
-    labelQuantity.place(x=500, y=470, anchor="e")
+    labelQuantity.place(x=x_offset, y=470, anchor="e")
     # Entry
     entryItemName = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemName.place(x=510, y=270, anchor="w", width=470, height=50)
+    entryItemName.place(x=x_offset+10, y=270, anchor="w", width=470, height=50)
     entryPrice = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryPrice.place(x=510, y=370, anchor="w", width=470, height=50)
+    entryPrice.place(x=x_offset+10, y=370, anchor="w", width=470, height=50)
     entryQuantity = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryQuantity.place(x=510, y=470, anchor="w", width=470, height=50)
+    entryQuantity.place(x=x_offset+10, y=470, anchor="w", width=470, height=50)
     # Submit button
     btnSubmit = Button(inputFrame, text="Submit", font=('Arial', 18), bg=orange, fg=white, relief='flat', command=clickedSubmit, activebackground='#FB5F00', activeforeground=white, padx=30, pady=5)
     btnSubmit.place(x=(screen_width-240)/2, y=800, anchor='center')
@@ -150,22 +129,22 @@ def clickedEdit():
     btnBack.place(x=50, y=70, anchor='w')
     # Label
     labelItemID = Label(inputFrame, text="Item ID :", font=('Arial', 24), fg=blue)
-    labelItemID.place(x=500, y=270, anchor="e")
+    labelItemID.place(x=x_offset, y=270, anchor="e")
     labelItemName = Label(inputFrame, text="New Item Name :", font=('Arial', 24), fg=blue)
-    labelItemName.place(x=500, y=370, anchor="e")
+    labelItemName.place(x=x_offset, y=370, anchor="e")
     labelPrice = Label(inputFrame, text="New Price(RM) :", font=('Arial', 24), fg=blue)
-    labelPrice.place(x=500, y=470, anchor="e")
+    labelPrice.place(x=x_offset, y=470, anchor="e")
     labelQuantity = Label(inputFrame, text="New Quantity :", font=('Arial', 24), fg=blue)
-    labelQuantity.place(x=500, y=570, anchor="e")
+    labelQuantity.place(x=x_offset, y=570, anchor="e")
     # Entry
     entryItemID = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemID.place(x=510, y=270, anchor="w", width=470, height=50)
+    entryItemID.place(x=x_offset+10, y=270, anchor="w", width=470, height=50)
     entryItemName = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemName.place(x=510, y=370, anchor="w", width=470, height=50)
+    entryItemName.place(x=x_offset+10, y=370, anchor="w", width=470, height=50)
     entryPrice = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryPrice.place(x=510, y=470, anchor="w", width=470, height=50)
+    entryPrice.place(x=x_offset+10, y=470, anchor="w", width=470, height=50)
     entryQuantity = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryQuantity.place(x=510, y=570, anchor="w", width=470, height=50)
+    entryQuantity.place(x=x_offset+10, y=570, anchor="w", width=470, height=50)
     # Submit button
     btnSubmit = Button(inputFrame, text="Submit", font=('Arial', 18), bg=orange, fg=white, relief='flat', command=clickedSubmit, activebackground='#FB5F00', activeforeground=white, padx=30, pady=5)
     btnSubmit.place(x=(screen_width-240)/2, y=800, anchor='center')
@@ -224,14 +203,14 @@ def clickedDisplay():
     btnBack.place(x=50, y=70, anchor='w')
     # Label
     labelItemID = Label(inputFrame, text="Item ID :", font=('Arial', 24), fg=blue)
-    labelItemID.place(x=500, y=270, anchor="e")
+    labelItemID.place(x=x_offset, y=270, anchor="e")
     labelItemName = Label(inputFrame, text="Item Name :", font=('Arial', 24), fg=blue)
-    labelItemName.place(x=500, y=370, anchor="e")
+    labelItemName.place(x=x_offset, y=370, anchor="e")
     # Entry
     entryItemID = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemID.place(x=510, y=270, anchor="w", width=470, height=50)
+    entryItemID.place(x=x_offset+10, y=270, anchor="w", width=470, height=50)
     entryItemName = Entry(inputFrame, font=('Arial', 24), fg=white, bg=blue)
-    entryItemName.place(x=510, y=370, anchor="w", width=470, height=50)
+    entryItemName.place(x=x_offset+10, y=370, anchor="w", width=470, height=50)
     # Submit button
     btnSubmit = Button(inputFrame, text="Search", font=('Arial', 18), bg=orange, fg=white, relief='flat', command=clickedSubmit, activebackground='#FB5F00', activeforeground=white, padx=30, pady=5)
     btnSubmit.place(x=(screen_width-240)/2, y=800, anchor='center')
@@ -256,6 +235,8 @@ window = Tk()
 window.attributes('-fullscreen', True)
 screen_width = window.winfo_screenwidth()        
 screen_height = window.winfo_screenheight()
+# X offset calculation
+x_offset = int((screen_width-240-780)/2 + 250)
 # Create database and table
 inventory.create_inventory_db()
 inventory.execute_sql_file("sql/InventoryDB.sql")
