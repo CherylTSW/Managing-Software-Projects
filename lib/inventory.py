@@ -50,24 +50,30 @@ def execute_sql_file(filename):
 # Method to add an inventory item using the itemName, itemPrice, and itemQuantity received as parameters.
 # Return True if successful, else return False
 def add_inventory(itemName: str, itemPrice: float, itemQuantity: int):
-    # Create the INSERT code to be executed
-    sqlInsert = f"INSERT INTO Items (itemName, itemPrice, itemQuantity) VALUES (%s, %s, %s)"
-    data = (itemName, itemPrice, itemQuantity)
+    try:
+        # Create the INSERT code to be executed
+        sqlInsert = f"INSERT INTO Items (itemName, itemPrice, itemQuantity) VALUES (%s, %s, %s)"
+        data = (itemName, itemPrice, itemQuantity)
 
-    # Connect to database and execute the command
-    mydb = connect_inventory_db()
-    myCursor = mydb.cursor()
-    myCursor.execute(sqlInsert, data)
-    mydb.commit()
+        # Connect to database and execute the command
+        mydb = connect_inventory_db()
+        myCursor = mydb.cursor()
+        myCursor.execute(sqlInsert, data)
+        mydb.commit()
 
-    # Obtain the count of row affected
-    result = myCursor.rowcount
-    mydb.close()
-    
-    # If row affected > 0, the insertion is successful. Return True on success, else return false
-    if(result > 0):
-        return True
-    else:
+        # Obtain the count of row affected
+        result = myCursor.rowcount
+        mydb.close()
+        
+        toReturn = False
+        # If row affected > 0, the insertion is successful. Return True on success, else return false
+        if(result > 0):
+            toReturn = True
+
+        return toReturn
+        
+    # If there is error, return False        
+    except Error:
         return False
 
 # Method to get all inventory item from the database
@@ -123,7 +129,7 @@ def get_inventory_by_name(name: str):
 # Method to edit the information of an inventory item with itemID = id(parameter) by replacing its itemName, itemPrice and itemQuantity with the parameter newName, newPrice and newQuantity.
 # Return True if item is edited successfully, else return False
 def edit_inventory(newName: str, newPrice: float, newQuantity: int, id: int):
-    try:
+    if(get_inventory_by_id(id)):
         # try updating the table Items by setting itemName = newName, itemPrice = newPrice, itemQuantity = newQuantity. Return True
         mydb = connect_inventory_db()
         query = f"Update Items SET itemName = %s, itemPrice = %s, itemQuantity = %s WHERE itemID = %s"
@@ -133,15 +139,16 @@ def edit_inventory(newName: str, newPrice: float, newQuantity: int, id: int):
         mydb.commit()
         mydb.close()
         return True
-    except Error:
+    else:
         # return False if error occurs
         return False
 
 # Method to display the items retrieved from database in a table form
-def display_inventory(window: Tk, startColumn: int, startRow: int, items):
+def display_inventory(frame: Tk, startX: int, startY: int, items):
     # Declaring fields(used as table headings) and fieldsWidth(used to set width of each column)
-    fields = ["ID", "Item Name", "Price", "Quantity"]
-    fieldsWidth = [10, 30, 15, 15]
+    fields = ["ID", "Item Name", "Price(RM)", "Quantity"]
+    fieldsWidth = [100, 600, 150, 150]
+    fieldsXPos = [0, 100, 700, 850]
 
     # Get the number of rows and columns
     numberOfRow = len(items)
@@ -150,10 +157,12 @@ def display_inventory(window: Tk, startColumn: int, startRow: int, items):
     # loop to create the Label()
     for x in range(numberOfRow):
         for y in range(numberOfColumn):
-            heading = Label(window, font=('Arial', 12), text=fields[y], width=fieldsWidth[y], borderwidth=2, relief="ridge")
-            heading.grid(column=startColumn+y, row=startRow)
-            data = Label(window, font=('Arial', 12), text=items[x][y], width=fieldsWidth[y], borderwidth=2, relief="ridge")
-            data.grid(column=startColumn+y, row=startRow+x+1)
+            heading = Label(frame, font=('Arial', 16, BOLD), text=fields[y], borderwidth=2, relief="ridge", bg='#344955', fg='#ffffff')
+            heading.place(x=startX+fieldsXPos[y], y=startY, anchor="w", width=fieldsWidth[y], height=40)
+            heading.config(highlightbackground='#ffffff')
+            data = Label(frame, font=('Arial', 14), text=items[x][y], borderwidth=2, relief="ridge", bg='#344955', fg='#ffffff')
+            data.config(highlightbackground='#ffffff')
+            data.place(x=startX+fieldsXPos[y], y=startY+(x+1)*40, anchor="w", width=fieldsWidth[y], height=40)
 
 
 
